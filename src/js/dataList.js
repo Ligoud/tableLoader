@@ -3,12 +3,18 @@ import Comparator from "./Comparator";
 class TableData {
   //list - массив данных, получаемый с сервера
   constructor(list, maxRowsOnPage = 50) {
-    this.list = list;
+    //Массив данных с сервера
+    this.rawList = list;
     this.rowsOnPage = maxRowsOnPage;
+    //Будет содержать изменённые данные
+    this.formedList = this.rawList;
+  }
+  getList() {
+    return this.formedList;
   }
   //Возвращает количество страниц для пагинации
   getPageCounts() {
-    return Math.ceil(this.list.length / this.rowsOnPage);
+    return Math.ceil(this.formedList.length / this.rowsOnPage);
   }
   //Возвращает данные страницы
   getPage(page) {
@@ -18,9 +24,9 @@ class TableData {
     let endInd = this.rowsOnPage * page;
     //
     //Проверяем правую границу, чтобы не выйти за пределы массива
-    if (endInd > this.list.length) endInd = this.list.length;
+    if (endInd > this.formedList.length) endInd = this.formedList.length;
     //
-    return this.list.slice(startInd, endInd);
+    return this.formedList.slice(startInd, endInd);
   }
   //
   //Сортирует список по полю column. Direction asc/desc
@@ -54,7 +60,25 @@ class TableData {
         break;
     }
     //Сортируем ВЕСЬ список
-    this.list = this.list.sort(compFn);
+    this.formedList.sort(compFn);
+  }
+  //По поиску выбираем множество
+  formSubSetByKeyword(keyword) {
+    keyword = keyword.toLowerCase();
+    let newArr = [];
+    this.rawList.forEach((el) => {
+      let checker = false;
+      for (let prop in el) {
+        //Не учитываю адрес при проверки соответствия
+        if (typeof el[prop] !== "object")
+          if (el[prop].toString().toLowerCase().includes(keyword)) {
+            checker = true;
+          }
+      }
+      if (checker) newArr.push(el);
+    });
+
+    this.formedList = [...newArr];
   }
 }
 

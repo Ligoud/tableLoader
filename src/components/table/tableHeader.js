@@ -7,30 +7,40 @@ export default function TableHeader() {
   function handleSort(ev) {
     //Проверка на то инициализирован ли объект или нет
     if (dataList) {
+      //Функция устанавливающая положение стрелки
+      function setTriangle(element, pos) {
+        element.classList.remove("triangle--left");
+        element.classList.remove("triangle--up");
+        element.classList.remove("triangle--down");
+        element.classList.add(`triangle--${pos}`);
+      }
+      //
       let target = ev.currentTarget;
       let sortType = target.getAttribute("data-sort-type");
       let sortDirection = target.getAttribute("data-sort-direction");
 
       //Первая переменная - новое направление стрелочки. Второе - предыдущее направление стрелочки
-      let modifierAdd = "up",
-        modifierRemove = "left";
+      let modifierAdd = "up";
       //Проверяем как отсортирована таблица сейчас
       if (sortDirection === "none" || sortDirection === "desc") {
         //Меняем на asc значит ( т.е. стрелочка вниз будет)
-        if (sortDirection === "desc") modifierRemove = "up";
         sortDirection = "asc";
         modifierAdd = "down";
       } else if (sortDirection === "asc") {
         //Меняем на desc значит ( т.е. стрелочка вверх будет)
-        modifierRemove = "down";
         sortDirection = "desc";
       }
       //Меняем data- аттрибут у колонки
       target.setAttribute("data-sort-direction", sortDirection);
       //Меняем положение стрелочки
-      target.classList.add(`triangle--${modifierAdd}`);
-
-      target.classList.remove(`triangle--${modifierRemove}`);
+      document.querySelectorAll("thead tr th div").forEach((el) => {
+        if (el.getAttribute("data-sort-type") === sortType)
+          setTriangle(el, modifierAdd);
+        else {
+          setTriangle(el, "left");
+          el.setAttribute("data-sort-direction", "none");
+        }
+      });
 
       //Обновляем данные внутри класса. Возможно мутацию надо убрать. Не уверен как правильно
       dataList.sortListBy(sortType, sortDirection);
