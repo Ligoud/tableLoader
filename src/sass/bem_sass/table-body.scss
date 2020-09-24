@@ -1,0 +1,15 @@
+.table-body {
+  height: 75vh;
+  max-height: 75vh;
+  overflow: scroll;
+  &__list {
+    background-color: white;
+    cursor: pointer;
+  }
+  &__table-row {
+    .background--transparent {
+      @extend &;
+      background-color: transparent;
+    }
+  }
+}
