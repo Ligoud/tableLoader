@@ -1,15 +1,17 @@
 .table-body {
   height: 75vh;
   max-height: 75vh;
+  // display: block;
+  border-collapse: collapse;
+  width: 100%;
   overflow: scroll;
-  &__list {
+
+  &__table-row {
     background-color: white;
     cursor: pointer;
   }
-  &__table-row {
-    .background--transparent {
-      @extend &;
-      background-color: transparent;
-    }
+  .background--transparent {
+    cursor: default;
+    background-color: transparent !important;
   }
 }

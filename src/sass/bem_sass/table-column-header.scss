@@ -1,20 +1,32 @@
 @import "../mixins.scss";
+
+%trianglePos {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translate(0, -50%);
+  transition: 0.5s;
+}
 //
 .table-column-header {
   position: relative;
-  display: flex;
-  justify-content: center;
-  //   border: 1px solid #dcdde1;
 
-  &::after {
-    @include css-triangle(0.5rem, #dcdde1, "up");
-    position: absolute;
-    right: 0px;
-    top: 50%;
-    transform: translate(0, -50%);
-    // transition: 0.5s;
-  }
   &:hover {
     cursor: pointer;
+  }
+  //Модификаторы
+  &.triangle {
+    &--left::after {
+      @include css-triangle(0.5rem, #dcdde1, "left");
+      @extend %trianglePos;
+    }
+    &--up::after {
+      @include css-triangle(0.5rem, #dcdde1, "up");
+      @extend %trianglePos;
+    }
+    &--down::after {
+      @include css-triangle(0.5rem, #dcdde1, "down");
+      @extend %trianglePos;
+    }
   }
 }
