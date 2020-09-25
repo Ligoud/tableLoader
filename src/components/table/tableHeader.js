@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
+import { currentPageContext } from "../../contexts/currentPage";
 import { dataListContext } from "../../contexts/dataListContext";
 //
 export default function TableHeader() {
   const { dataList, forceToUpdate } = useContext(dataListContext);
+  const { updateCurrentPage } = useContext(currentPageContext);
 
   function handleSort(ev) {
     //Проверка на то инициализирован ли объект или нет
@@ -45,7 +47,8 @@ export default function TableHeader() {
       //Обновляем данные внутри класса. Возможно мутацию надо убрать. Не уверен как правильно
       dataList.sortListBy(sortType, sortDirection);
       //Сигнализируем табилце о том, что данные обновились
-      forceToUpdate();
+      updateCurrentPage(1);
+      forceToUpdate(); //Если страница была и так первой и ререндер не сработал.
     }
   }
   return (
