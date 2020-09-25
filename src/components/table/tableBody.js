@@ -4,16 +4,18 @@ import Fetcher from "../../js/fetch";
 import TableRow from "./talbeRow";
 import LoadingSpinner from "../loadingSpinner";
 import { dataListContext } from "../../contexts/dataListContext";
+import { currentPageContext } from "../../contexts/currentPage";
 
 //Здесь будет инициализирован наш класс для работы с загруженными данными
 
 function TableBody() {
   const { packageSize } = useContext(packageContext);
   const { dataList, initDataList, updateForcer } = useContext(dataListContext);
-
+  const { currentPage } = useContext(currentPageContext);
   //if isLoaded === true - display data in table. else - show loading animation
   const [isLoaded, setLoadingState] = useState(false);
   const [renderedContent, setRenderedContent] = useState();
+  //
   //
   //
   useEffect(() => {
@@ -34,12 +36,14 @@ function TableBody() {
     //Переформировывем то, что долнжо отображаться в таблице
     if (isLoaded) {
       //Формируем табилцу для отрисовки
-      let rows = dataList.getPage(1);
+      const pageNumber = currentPage;
+      let rows = dataList.getPage(pageNumber);
       let jsxRows = [];
-      rows.forEach((el) => {
+      rows.forEach((el, index) => {
         jsxRows.push(
           <TableRow
             element={el}
+            rowIndex={(pageNumber - 1) * 50 + index} //Это индекс в массиве данных
             key={`${el.id}.${el.firstName}.${el.secondName}`}
           />
         );
@@ -58,7 +62,7 @@ function TableBody() {
         </React.Fragment>
       );
     }
-  }, [isLoaded, updateForcer]);
+  }, [isLoaded, updateForcer, dataList, currentPage]);
 
   return (
     <tbody

@@ -1,0 +1,22 @@
+.input-component {
+  &__input-field {
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border: 1px solid black;
+    }
+  }
+  &__input-button {
+    cursor: pointer;
+    span {
+      color: black;
+
+      transition: 0.3s;
+      background-color: #7f8fa6;
+
+      &:hover {
+        background-color: #3b9c2c;
+      }
+    }
+  }
+}

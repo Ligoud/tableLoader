@@ -1,24 +1,37 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
+import { currentPageContext } from "../contexts/currentPage";
+import { dataListContext } from "../contexts/dataListContext";
 
 export default function PaginationBar() {
-  return (
-    <Pagination className="mt-1">
-      <Pagination.First />
-      <Pagination.Prev />
-      <Pagination.Item>{1}</Pagination.Item>
-      <Pagination.Ellipsis />
+  const { dataList, updateForcer } = useContext(dataListContext);
+  const { currentPage, updateCurrentPage } = useContext(currentPageContext);
+  const [paginationItems, setPaginationItems] = useState([]);
+  //
+  function onPaginationButtonClicked(event) {
+    updateCurrentPage(+event.currentTarget.getAttribute("data-page-number"));
+  }
+  //
+  //Формируем список кнопок для пагинации. Потом скипы надо добавить чтобы не росла строка.
 
-      <Pagination.Item>{10}</Pagination.Item>
-      <Pagination.Item>{11}</Pagination.Item>
-      <Pagination.Item>{12}</Pagination.Item>
-      <Pagination.Item>{13}</Pagination.Item>
-      <Pagination.Item>{14}</Pagination.Item>
+  useEffect(() => {
+    if (dataList) {
+      let renderArray = [];
+      for (let i = 0; i < dataList.getTotalPages(); i++) {
+        renderArray.push(
+          <Pagination.Item
+            data-page-number={i + 1}
+            key={i + 1}
+            onClick={onPaginationButtonClicked}
+            active={i + 1 === currentPage}
+          >
+            {i + 1}
+          </Pagination.Item>
+        );
+      }
+      setPaginationItems(renderArray);
+    }
+  }, [dataList, currentPage, updateForcer]);
 
-      <Pagination.Ellipsis />
-      <Pagination.Item>{20}</Pagination.Item>
-      <Pagination.Next />
-      <Pagination.Last />
-    </Pagination>
-  );
+  return <Pagination className="mt-1">{paginationItems}</Pagination>;
 }

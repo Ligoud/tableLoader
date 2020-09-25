@@ -8,8 +8,10 @@ function TableFooter() {
   const { dataList, forceToUpdate } = useContext(dataListContext);
   //
   function filterTableByText(text) {
-    dataList.formSubSetByKeyword(text);
-    forceToUpdate();
+    if (dataList) {
+      dataList.formSubSetByKeyword(text);
+      forceToUpdate();
+    }
   }
   return (
     <React.Fragment>

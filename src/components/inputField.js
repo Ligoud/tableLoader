@@ -20,9 +20,9 @@ export default function InputField(props) {
   }
   return (
     <React.Fragment>
-      <InputGroup className="mb-2 py-2">
+      <InputGroup className="input-component mb-2 py-2">
         <FormControl
-          className=""
+          className="input-component__input-field"
           type="text"
           placeholder={props.inputPlaceHolder}
           onChange={inputHandler}
@@ -30,7 +30,10 @@ export default function InputField(props) {
           value={text}
         />
 
-        <InputGroup.Append className="sendMessageButton" onClick={handleClick}>
+        <InputGroup.Append
+          className="input-component__input-button"
+          onClick={handleClick}
+        >
           <InputGroup.Text>{props.buttonName}</InputGroup.Text>
         </InputGroup.Append>
       </InputGroup>

@@ -12,8 +12,11 @@ class TableData {
   getList() {
     return this.formedList;
   }
+  getInfoByIndex(index) {
+    return this.formedList[index];
+  }
   //Возвращает количество страниц для пагинации
-  getPageCounts() {
+  getTotalPages() {
     return Math.ceil(this.formedList.length / this.rowsOnPage);
   }
   //Возвращает данные страницы
@@ -79,6 +82,22 @@ class TableData {
     });
 
     this.formedList = [...newArr];
+  }
+  //
+  addRow(row) {
+    let obj = {
+      id: Number,
+      firstName: String,
+      lastName: String,
+      email: String,
+      phone: String,
+    };
+    for (let prop in obj) {
+      obj[prop] = row[prop];
+    }
+    obj.address = {};
+
+    this.formedList.unshift(obj);
   }
 }
 
